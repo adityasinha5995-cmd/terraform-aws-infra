@@ -10,12 +10,33 @@ terraform-aws-infra/
 │   ├── vpc/         # Networking — VPC, subnets, IGW, route tables
 │   ├── ec2/         # Compute — EC2 instances, security groups
 │   ├── s3/          # Storage — S3 buckets with versioning & encryption
-│   └── iam/         # Identity — IAM roles & policies
+│   ├── iam/         # Identity — IAM roles & policies
+│   └── rds/         # Database — MySQL RDS in private subnets
 ├── environments/
-│   ├── dev/         # Dev environment config
-│   └── prod/        # Prod environment config
+│   ├── dev/         # Dev environment (small instances, no deletion protection)
+│   └── prod/        # Prod environment (larger instances, full protection)
 └── .github/
     └── workflows/   # CI/CD — Terraform plan & apply pipelines
+```
+
+## 🏛️ Architecture
+
+```
+                        ┌─────────────────────────────────┐
+                        │           AWS VPC                │
+                        │  ┌─────────────┐                │
+Internet ──────────────▶│  │ Public      │  EC2 Instance  │
+                        │  │ Subnet      │  (Web Server)  │
+                        │  └──────┬──────┘                │
+                        │         │                        │
+                        │  ┌──────▼──────┐                │
+                        │  │ Private     │  RDS MySQL      │
+                        │  │ Subnet      │  (Database)     │
+                        │  └─────────────┘                │
+                        └─────────────────────────────────┘
+                                    │
+                              S3 Bucket
+                           (Encrypted Storage)
 ```
 
 ## 🚀 Getting Started
@@ -43,37 +64,56 @@ terraform plan
 
 # Apply the infrastructure
 terraform apply
+
+# When done — destroy everything to avoid charges
+terraform destroy
 ```
 
 ## 🌍 Environments
 
-| Environment | Region      | Purpose              |
-|-------------|-------------|----------------------|
-| dev         | us-east-1   | Development & testing |
-| prod        | us-east-1   | Production workloads  |
+| Setting              | Dev            | Prod           |
+|----------------------|----------------|----------------|
+| EC2 instance         | t3.micro       | t3.small       |
+| RDS instance         | db.t3.micro    | db.t3.small    |
+| DB storage           | 20 GB          | 100 GB         |
+| Deletion protection  | Off            | On             |
+| Final snapshot       | Skipped        | Always taken   |
+| Backup retention     | 1 day          | 7 days         |
+| VPC CIDR             | 10.0.0.0/16    | 10.1.0.0/16    |
 
 ## 🔐 Security Practices
 
 - Remote state stored in S3 with DynamoDB locking
-- IAM roles follow least privilege principle
-- No hardcoded credentials — uses AWS CLI profiles or environment variables
-- S3 buckets have versioning and AES-256 encryption enabled by default
+- IAM roles follow least privilege — EC2 gets only the S3 access it needs
+- No hardcoded credentials — use tfvars locally, CI/CD secrets in pipelines
+- S3 buckets have versioning, AES-256 encryption, and public access blocked
+- RDS lives in private subnets — never directly accessible from the internet
+- RDS storage encrypted at rest
+- Prod has deletion protection enabled to prevent accidents
 
 ## 🔄 CI/CD Pipeline
 
-On every Pull Request → `terraform plan` runs automatically  
-On merge to `main` → `terraform apply` runs automatically
+| Trigger            | Action                          |
+|--------------------|---------------------------------|
+| Pull Request       | terraform plan (preview only)   |
+| Merge to main      | terraform apply (deploy)        |
+
+AWS credentials are stored as GitHub Secrets — never in code.
 
 ## 📦 Modules Overview
 
-### VPC Module
-Creates a full networking layer: VPC, public/private subnets, Internet Gateway, NAT Gateway, and route tables.
+| Module | What it creates |
+|--------|----------------|
+| vpc    | VPC, public/private subnets, IGW, route tables |
+| ec2    | EC2 instance, security group |
+| s3     | S3 bucket with versioning, encryption, access block |
+| iam    | IAM role, policy, instance profile |
+| rds    | MySQL RDS instance, subnet group, security group |
 
-### EC2 Module
-Provisions EC2 instances with configurable AMI, instance type, and security groups.
+## 🔮 What Would Be Added Next
 
-### S3 Module
-Creates S3 buckets with versioning, encryption, and public access blocking.
-
-### IAM Module
-Creates IAM roles and attaches policies for secure service-to-service access.
+- Application Load Balancer + Auto Scaling Group for EC2
+- CloudWatch alarms and dashboards for monitoring
+- ECS/EKS for containerised workloads
+- AWS WAF for web application firewall
+- Route53 for DNS management
