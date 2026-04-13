@@ -117,3 +117,17 @@ AWS credentials are stored as GitHub Secrets — never in code.
 - ECS/EKS for containerised workloads
 - AWS WAF for web application firewall
 - Route53 for DNS management
+
+## 📸 Live Deployment Screenshots
+
+### EC2 Instance Running
+![EC2](screenshots/ec2-running.png)
+
+### RDS Database
+![RDS](screenshots/rds-database.png)
+
+### S3 Bucket
+![S3](screenshots/s3-bucket.png)
+
+### VPC
+![VPC](screenshots/vpc.png)

@@ -10,7 +10,7 @@ terraform {
 
   # Prod state is stored separately from dev — completely isolated
   backend "s3" {
-    bucket         = "my-terraform-state-bucket"
+    bucket         = "aditya-terraform-state-2026"
     key            = "prod/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-lock"

@@ -10,7 +10,7 @@ terraform {
 
   # Remote state — keeps state file safe in S3, uses DynamoDB to prevent conflicts
   backend "s3" {
-    bucket         = "my-terraform-state-bucket"
+    bucket         = "aditya-terraform-state-2026"
     key            = "dev/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-lock"

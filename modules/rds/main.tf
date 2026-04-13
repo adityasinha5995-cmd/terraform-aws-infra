@@ -14,7 +14,7 @@ resource "aws_db_subnet_group" "main" {
 # Only allows traffic on port 3306 (MySQL) from within the VPC — not public
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-${var.environment}-rds-sg"
-  description = "Security group for RDS — only allows MySQL from within VPC"
+  description = "Security group for RDS - only allows MySQL from within VPC"
   vpc_id      = var.vpc_id
 
   ingress {
