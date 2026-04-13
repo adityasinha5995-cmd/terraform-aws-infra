@@ -12,7 +12,7 @@ instance_type = "t3.small"
 # RDS — more storage, deletion protection on, 7 days of backups
 db_name             = "appdb"
 db_username         = "admin"
-db_password         = ""              # set via CI/CD secret — never hardcode
+db_password         = "" # set via CI/CD secret — never hardcode
 db_instance_class   = "db.t3.small"
 db_storage          = 100
 deletion_protection = true

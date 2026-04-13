@@ -55,8 +55,8 @@ resource "aws_db_instance" "main" {
   vpc_security_group_ids = [aws_security_group.rds.id]
 
   # Security best practices
-  publicly_accessible     = false   # never expose DB to internet
-  storage_encrypted       = true    # encrypt data at rest
+  publicly_accessible     = false # never expose DB to internet
+  storage_encrypted       = true  # encrypt data at rest
   deletion_protection     = var.deletion_protection
   skip_final_snapshot     = var.skip_final_snapshot
   backup_retention_period = var.backup_retention_days

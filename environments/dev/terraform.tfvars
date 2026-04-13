@@ -10,11 +10,11 @@ aws_region   = "us-east-1"
 instance_type = "t3.micro"
 
 # RDS — smallest size for dev, no deletion protection needed
-db_name              = "appdb"
-db_username          = "admin"
-db_password          = "dev-password-change-me"   # replace before running
-db_instance_class    = "db.t3.micro"
-db_storage           = 20
-deletion_protection  = false
-skip_final_snapshot  = true
-backup_retention     = 1
+db_name             = "appdb"
+db_username         = "admin"
+db_password         = "dev-password-change-me" # replace before running
+db_instance_class   = "db.t3.micro"
+db_storage          = 20
+deletion_protection = false
+skip_final_snapshot = true
+backup_retention    = 1

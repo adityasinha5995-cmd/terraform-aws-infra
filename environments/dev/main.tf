@@ -55,19 +55,19 @@ module "ec2" {
 
 # Step 5: Launch RDS in private subnets — not accessible from internet
 module "rds" {
-  source              = "../../modules/rds"
-  project_name        = var.project_name
-  environment         = var.environment
-  vpc_id              = module.vpc.vpc_id
-  vpc_cidr            = var.vpc_cidr
-  private_subnet_ids  = module.vpc.private_subnet_ids
+  source             = "../../modules/rds"
+  project_name       = var.project_name
+  environment        = var.environment
+  vpc_id             = module.vpc.vpc_id
+  vpc_cidr           = var.vpc_cidr
+  private_subnet_ids = module.vpc.private_subnet_ids
 
-  db_name              = var.db_name
-  db_username          = var.db_username
-  db_password          = var.db_password
-  instance_class       = var.db_instance_class
-  allocated_storage    = var.db_storage
-  deletion_protection  = var.deletion_protection
-  skip_final_snapshot  = var.skip_final_snapshot
+  db_name               = var.db_name
+  db_username           = var.db_username
+  db_password           = var.db_password
+  instance_class        = var.db_instance_class
+  allocated_storage     = var.db_storage
+  deletion_protection   = var.deletion_protection
+  skip_final_snapshot   = var.skip_final_snapshot
   backup_retention_days = var.backup_retention
 }
