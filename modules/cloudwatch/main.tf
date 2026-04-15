@@ -107,25 +107,43 @@ resource "aws_cloudwatch_dashboard" "main" {
       {
         type = "metric"
         properties = {
+          region = "us-east-1"
+
           title  = "EC2 CPU Utilization"
-          period = 60
-          metrics = [["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", var.asg_name]]
+          period = 300
+          stat   = "Average"
+
+          metrics = [
+            ["AWS/EC2", "CPUUtilization", "InstanceId", "i-123456"]
+          ]
         }
       },
       {
         type = "metric"
         properties = {
+          region = "us-east-1"
+
           title  = "RDS CPU Utilization"
           period = 60
-          metrics = [["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", var.db_instance_id]]
+          stat   = "Average"
+
+          metrics = [
+            ["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", var.db_instance_id]
+          ]
         }
       },
       {
         type = "metric"
         properties = {
+          region = "us-east-1"
+
           title  = "RDS Free Storage"
           period = 60
-          metrics = [["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", var.db_instance_id]]
+          stat   = "Average"
+
+          metrics = [
+            ["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", var.db_instance_id]
+          ]
         }
       }
     ]
