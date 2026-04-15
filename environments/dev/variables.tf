@@ -13,7 +13,10 @@ variable "asg_desired_capacity" { default = 2 }
 # RDS settings
 variable "db_name"     { default = "appdb" }
 variable "db_username" { default = "admin" }
-variable "db_password" { type = string; sensitive = true }
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
 variable "db_instance_class"   { default = "db.t3.micro" }
 variable "db_storage"          { default = 20 }
 variable "deletion_protection" { default = false }
