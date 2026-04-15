@@ -14,7 +14,7 @@ resource "aws_db_subnet_group" "main" {
 # Only allows traffic on port 3306 (MySQL) from within the VPC — not public
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-${var.environment}-rds-sg"
-  description = "Security group for RDS - only allows MySQL from within VPC"
+  description = "Security group for RDS — only allows MySQL from within VPC"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -55,8 +55,8 @@ resource "aws_db_instance" "main" {
   vpc_security_group_ids = [aws_security_group.rds.id]
 
   # Security best practices
-  publicly_accessible     = false # never expose DB to internet
-  storage_encrypted       = true  # encrypt data at rest
+  publicly_accessible     = false   # never expose DB to internet
+  storage_encrypted       = true    # encrypt data at rest
   deletion_protection     = var.deletion_protection
   skip_final_snapshot     = var.skip_final_snapshot
   backup_retention_period = var.backup_retention_days

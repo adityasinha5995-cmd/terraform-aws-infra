@@ -1,5 +1,6 @@
-output "vpc_id" { value = module.vpc.vpc_id }
-output "public_ip" { value = module.ec2.public_ip }
-output "bucket_id" { value = module.s3.bucket_id }
-output "db_endpoint" { value = module.rds.db_endpoint }
-output "db_port" { value = module.rds.db_port }
+output "alb_dns_name"  { value = module.alb.alb_dns_name }
+output "bucket_id"     { value = module.s3.bucket_id }
+output "db_endpoint"   { value = module.rds.db_endpoint }
+output "nat_public_ip" { value = module.nat.nat_public_ip }
+output "asg_name"      { value = module.asg.asg_name }
+output "dashboard"     { value = module.cloudwatch.dashboard_name }
